@@ -90,10 +90,13 @@ public interface GenericsUnirestUtil {
 		return file(httpRequest, System.getProperty("user.dir"));
 	}
 
-	default HttpRequest<?> putDefaultHeaders(HttpRequest<?> httpRequest) {
-		List<ChaveValorDTO> defaultHeaders = Arrays.asList(new ChaveValorDTO("accept", DEFAULT_ACCEPT),
+	default List<ChaveValorDTO> getDefaultHeaders() {
+		return Arrays.asList(new ChaveValorDTO("accept", DEFAULT_ACCEPT),
 				new ChaveValorDTO("content-type", DEFAULT_CONTENT_TYPE));
-		return putHeaders(httpRequest, defaultHeaders);
+	}
+
+	default HttpRequest<?> putDefaultHeaders(HttpRequest<?> httpRequest) {
+		return putHeaders(httpRequest, getDefaultHeaders());
 	}
 
 	default HttpRequest<?> putHeaders(HttpRequest<?> httpRequest, List<ChaveValorDTO> headers) {
