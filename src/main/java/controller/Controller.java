@@ -15,8 +15,7 @@ public class Controller implements GenericsController {
 	private List<ChaveValorDTO> headers = new ArrayList<>();
 
 	public Controller() {
-		baseUrl = "baseUrl";
-		baseUrl(baseUrl);
+		setBaseUrl("baseUrl_here");
 		clientId = "clientId_here";
 		clientSecret = "clientSecret_here";
 		addHeader("client_id", clientId);
@@ -55,6 +54,22 @@ public class Controller implements GenericsController {
 	@Override
 	public String getAppUrl() {
 		return appUrl;
+	}
+
+	@Override
+	public void setBaseUrl(String baseUrl) {
+		this.baseUrl = baseUrl;
+		putBaseUrl(baseUrl);
+	}
+
+	@Override
+	public void setEnv(String env) {
+		this.env = env;
+	}
+
+	@Override
+	public void setAppUrl(String appUrl) {
+		this.appUrl = appUrl;
 	}
 
 }

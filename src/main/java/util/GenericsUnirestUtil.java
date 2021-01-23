@@ -95,11 +95,9 @@ public interface GenericsUnirestUtil {
 		return Unirest.config();
 	}
 
-	default void baseUrl(String baseUrl) {
+	default void putBaseUrl(String baseUrl) {
 		if (Objects.nonNull(baseUrl))
 			getConfig().defaultBaseUrl(baseUrl);
-		else
-			throw new RuntimeException("base url can't be null");
 	}
 
 	default String getKeyFromResponse(HttpResponse<JsonNode> response, String key) {
