@@ -45,7 +45,6 @@ public interface GenericsUnirestUtil {
 	}
 
 	default void addHeaders(List<ChaveValorDTO> headers) {
-		validateHeaders();
 		if (Objects.nonNull(headers) && !headers.isEmpty()) {
 			for (ChaveValorDTO currentChaveValor : headers)
 				addHeader(currentChaveValor);
@@ -53,7 +52,6 @@ public interface GenericsUnirestUtil {
 	}
 
 	default void addHeaders(Map<String, String> map) {
-		validateHeaders();
 		Set<String> keys = map.keySet();
 		if (Objects.nonNull(keys) && !keys.isEmpty()) {
 			for (String currentKey : keys)
