@@ -1,9 +1,12 @@
 package util;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.Objects;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -19,9 +22,44 @@ public interface GenericsUnirestUtil {
 	static final String QUERY_STRING = "queryString";
 	static final String HEADER = "header";
 	static final String ROUTE_PARAM = "routeParam";
-
 	static final String DEFAULT_ACCEPT = "application/json";
-	static final String DEFAULT_CONTENT_TYPE = "application/json";
+	static final String DEFAULT_CONTENT_TYPE = "application/json;charset=utf-8";
+
+	// Obriga as concretas a implementar
+	List<ChaveValorDTO> getHeaders();
+
+	void setHeaders(List<ChaveValorDTO> headers);
+
+	default void validateHeaders() {
+		if (Objects.isNull(getHeaders()))
+			setHeaders(new ArrayList<ChaveValorDTO>());
+	}
+
+	default void addHeader(ChaveValorDTO chaveValor) {
+		validateHeaders();
+		getHeaders().add(chaveValor);
+	}
+
+	default void addHeader(String chave, String valor) {
+		addHeader(new ChaveValorDTO(chave, valor));
+	}
+
+	default void addHeaders(List<ChaveValorDTO> headers) {
+		validateHeaders();
+		if (Objects.nonNull(headers) && !headers.isEmpty()) {
+			for (ChaveValorDTO currentChaveValor : headers)
+				addHeader(currentChaveValor);
+		}
+	}
+
+	default void addHeaders(Map<String, String> map) {
+		validateHeaders();
+		Set<String> keys = map.keySet();
+		if (Objects.nonNull(keys) && !keys.isEmpty()) {
+			for (String currentKey : keys)
+				addHeader(currentKey, map.get(currentKey));
+		}
+	}
 
 	default HttpRequest<?> putChaveValorOnHttpRequest(List<ChaveValorDTO> chavesAndValores, HttpRequest<?> httpRequest,
 			String tipo) {
@@ -95,8 +133,13 @@ public interface GenericsUnirestUtil {
 				new ChaveValorDTO("content-type", DEFAULT_CONTENT_TYPE));
 	}
 
-	default HttpRequest<?> putDefaultHeaders(HttpRequest<?> httpRequest) {
-		return putHeaders(httpRequest, getDefaultHeaders());
+	default HttpRequest<?> putHeaders(HttpRequest<?> httpRequest) {
+		List<ChaveValorDTO> headers = getHeaders();
+		if (Objects.isNull(headers))
+			setHeaders(new ArrayList<ChaveValorDTO>());
+
+		getHeaders().addAll(getDefaultHeaders());
+		return putChaveValorOnHttpRequest(getHeaders(), httpRequest, HEADER);
 	}
 
 	default HttpRequest<?> putHeaders(HttpRequest<?> httpRequest, List<ChaveValorDTO> headers) {

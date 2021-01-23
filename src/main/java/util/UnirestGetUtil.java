@@ -12,7 +12,7 @@ import kong.unirest.Unirest;
 public interface UnirestGetUtil extends GenericsUnirestUtil {
 
 	default GetRequest get(String url) {
-		return (GetRequest) putDefaultHeaders(Unirest.get(url));
+		return (GetRequest) putHeaders(Unirest.get(url));
 	}
 
 	// Retorna a requisição como HttpResponse Tipado
